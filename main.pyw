@@ -24,18 +24,13 @@ class Case(Button):
 
 def clic(x, y):
     global joueur
-    possible = False
-    for (a, b) in {(0,1), (1,0), (0,-1), (-1,0), (-1,1), (1,-1)}:
-        if buttons[str(x+a)+"_"+str(y+b)].getValue() == joueur:
-            possible = True
-    if possible:
-        if buttons[str(x)+"_"+str(y)]["state"] != DISABLED:
-            main_text["text"] = "Tour du joueur "+str(((joueur+1)%2)+1)
-            buttons[str(x)+"_"+str(y)].flip()
-            if verifGagnant(((joueur+1)%2)):
-                main_text["text"] = "Joueur "+str(((joueur+1)%2)+1)+" gagne la partie"
-                for button in buttons.items():
-                    buttons[button[0]]['state'] = DISABLED
+    if buttons[str(x)+"_"+str(y)]["state"] != DISABLED:
+        main_text["text"] = "Tour du joueur "+str(((joueur+1)%2)+1)
+        buttons[str(x)+"_"+str(y)].flip()
+        if verifGagnant(((joueur+1)%2)):
+            main_text["text"] = "Joueur "+str(((joueur+1)%2)+1)+" gagne la partie"
+            for button in buttons.items():
+                buttons[button[0]]['state'] = DISABLED
 
 
 def verifGagnant(joueur):
@@ -54,7 +49,6 @@ def verifGagnant(joueur):
                 if buttons[str(x+a)+"_"+str(y+b)].getValue() == joueur:
                     if ((x+a),(y+b)) not in chemin:
                         chemin.append(((x+a),(y+b)))
-                        print(chemin)
     for fin in finaux:
         if fin in chemin:
             gagnant = True
@@ -62,14 +56,14 @@ def verifGagnant(joueur):
         return gagnant
 
 
-ncols = 15
+ncols = 10
 nrows = 10
 buttons = {}
 boutons_finaux_j1 = []
 boutons_finaux_j2 = []
 fen = Tk()
 fen.title('Grille hexa')
-fen.geometry('525x400')
+fen.geometry('400x400')
 for i in range(nrows):
     for j in range(ncols):
         if(i == 0 or i == (nrows - 1)):
@@ -90,6 +84,4 @@ Label(fen, text = "Joueur 1", fg = "green").place(x = 25, y = 25*(nrows+2))
 Label(fen, text = "Joueur 2", fg = "blue").place(x = 25, y = 25*(nrows+4))
 main_text = Label(fen, text = "Tour du joueur 1")
 main_text.place(x = 150, y = 25*(nrows+3))
-print(boutons_finaux_j1)
-print(boutons_finaux_j2)
 fen.mainloop()
